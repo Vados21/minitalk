@@ -5,14 +5,18 @@ void	get_text(int sig)
 	static unsigned char	msg = 0;
 	static int				size_bit = 0;
 
+	msg = msg << 1;
+	if (sig == SIGUSR2)
+		msg = msg | 1;
 	++size_bit;
-	msg = msg >> 1;
-	if (sig == SIGUSR1)
-		msg = msg | 128;
 	if (size_bit == 8)
 	{
-		ft_putchar_fd(msg, 1);
+		if (msg == 0)
+			ft_putchar_fd('\n', 1);
+		else
+			ft_putchar_fd(msg, 1);
 		size_bit = 0;
+		msg = 0;
 	}
 }
 
