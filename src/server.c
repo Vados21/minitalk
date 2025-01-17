@@ -1,4 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vshpilev <vshpilev@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/14 14:17:28 by vshpilev          #+#    #+#             */
+/*   Updated: 2025/01/14 14:17:30 by vshpilev         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../minitalk.h"
+#include <signal.h>
 
 void	get_text(int sig)
 {
@@ -25,8 +37,9 @@ int	main(void)
 	pid_t				pid;
 	struct sigaction	sa;
 
-	sa.sa_flags = SA_SIGINFO;
+	sa.sa_flags = 0;
 	sa.sa_handler = &get_text;
+	sigemptyset(&sa.sa_mask);
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	pid = getpid();

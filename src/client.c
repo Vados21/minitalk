@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vshpilev <vshpilev@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/14 14:17:20 by vshpilev          #+#    #+#             */
+/*   Updated: 2025/01/14 14:17:22 by vshpilev         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+#include <unistd.h>
 #include "../minitalk.h"
 
 void	print_error(void)
@@ -21,32 +33,33 @@ void	send_signals(int pid, char *message)
 				kill(pid, SIGUSR1);
 			else if (((unsigned char)(message[letter] >> (7 - i)) & 1) == 1)
 				kill(pid, SIGUSR2);
-			usleep(50);
+			usleep(100);
 		}
-	letter++;
+		letter++;
 	}
 	i = 0;
 	while (i++ < 8)
 	{
 		kill(pid, SIGUSR1);
-		usleep(50);
+		usleep(100);
 	}
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	int pid;
-	char *message;
-	if(argc == 3)
+	int		pid;
+	char	*message;
+
+	if (argc == 3)
 	{
 		pid = ft_atoi(argv[1]);
-		if(!pid)
+		if (!pid)
 		{
 			print_error();
 			return (0);
 		}
 		message = argv[2];
-		if(message[0] == 0)
+		if (message[0] == 0)
 		{
 			print_error();
 			return (0);

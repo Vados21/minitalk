@@ -1,49 +1,57 @@
-# Основной Makefile для проекта minitalk
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: vshpilev <vshpilev@student.hive.fi>        +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/01/14 14:17:01 by vshpilev          #+#    #+#              #
+#    Updated: 2025/01/14 14:17:04 by vshpilev         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-# Компилятор и флаги
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
-# Названия программ
 NAME = minitalk
 SERVER = server
 CLIENT = client
 
-# Директории
 SRC_DIR = src
-LIBFT_DIR = printf/libft
-LIBFT = $(LIBFT_DIR)/libft.a
+PRINTF_DIR = printf
+LIBFTPRINTF = $(PRINTF_DIR)/libftprintf.a
 
-# Исходные файлы
-SERVER_SRC = $(SRC_DIR)/server.c 
+SERVER_SRC = $(SRC_DIR)/server.c
 CLIENT_SRC = $(SRC_DIR)/client.c
 
-# Объектные файлы
 SERVER_OBJ = $(SERVER_SRC:.c=.o)
 CLIENT_OBJ = $(CLIENT_SRC:.c=.o)
 
-# Правила
-all: $(LIBFT) $(NAME)
+all: $(LIBFTPRINTF) $(NAME)
 
-$(LIBFT):
-	@$(MAKE) -C $(LIBFT_DIR)
+$(LIBFTPRINTF):
+	@$(MAKE) -C $(PRINTF_DIR)
 
 $(NAME): $(SERVER) $(CLIENT)
 
 $(SERVER): $(SERVER_OBJ)
-	$(CC) $(CFLAGS) -o $@ $^ $(LIBFT)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBFTPRINTF)
 
 $(CLIENT): $(CLIENT_OBJ)
-	$(CC) $(CFLAGS) -o $@ $^ $(LIBFT)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBFTPRINTF)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@$(MAKE) -C $(LIBFT_DIR) clean
+	@$(MAKE) -C $(PRINTF_DIR) clean
 	rm -f $(SERVER_OBJ) $(CLIENT_OBJ)
 
 fclean: clean
-	@$(MAKE) -C $(LIBFT_DIR) fclean
+	@$(MAKE) -C $(PRINTF_DIR) fclean
 	rm -f $(SERVER) $(CLIENT)
 
 re: fclean all
 
 .PHONY: all clean fclean re
+
